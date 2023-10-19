@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+import MiniSearch from "minisearch"
+import { jobData } from '../components/data/jobs'
 
 import TopBar from '../components/top-bar'
 import TopBanner from '../components/top-banner'
@@ -7,6 +10,25 @@ import SearchBar from '../components/search-bar'
 import JobDetailsCard from '../components/job-details-card'
 
 const Search = (props) => {
+
+  const router = useRouter();
+  const [jobDetails, setJobDetails] = useState([]);
+  const searchEngine = new MiniSearch({
+    fields: ["jobTitle", "postedBy", "location"],
+    storeFields: ["jobTitle", "postedBy", "postedOn", "shortDescription", "applicants", "location"]
+  })
+
+  searchEngine.addAll(jobData)
+
+  useEffect(() => {
+    console.log("useEffect", router.query.q)
+    if (router.query.q) {
+      const result = searchEngine.search(router.query.q);
+      console.log(result)
+      setJobDetails(result)
+    }
+  }, [router])
+
   return (
     <>
       <div className="search-container">
@@ -19,7 +41,7 @@ const Search = (props) => {
         <div className="search-container1">
           <SearchBar rootClassName="search-bar-root-class-name1"></SearchBar>
           <div className="search-container2">
-            <span>30145 Results Found</span>
+            <span>{jobDetails.length} Results Found</span>
             <a
               href="https://example.com"
               target="_blank"
@@ -31,9 +53,20 @@ const Search = (props) => {
             </a>
           </div>
           <div className="search-container3">
-            <JobDetailsCard rootClassName="job-details-card-root-class-name"></JobDetailsCard>
-            <JobDetailsCard rootClassName="job-details-card-root-class-name1"></JobDetailsCard>
-            <JobDetailsCard rootClassName="job-details-card-root-class-name2"></JobDetailsCard>
+            {
+              jobDetails.map((data, i) => (
+                <JobDetailsCard
+                  rootClassName="job-details-card-root-class-name"
+                  jobTitle={data.jobTitle}
+                  postedBy={data.postedBy}
+                  postedOn={data.postedOn}
+                  shortDescription={data.shortDescription}
+                  applicants={data.applicants}
+                  location={data.location}
+                  button="Apply"
+                ></JobDetailsCard>
+              ))
+            }
           </div>
         </div>
       </div>

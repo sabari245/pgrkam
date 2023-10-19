@@ -1,8 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
 
 const SearchBar = (props) => {
+
+  const router = useRouter()
+  const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    if (router.pathname == "/search") {
+      if (router.query.q) {
+        setQuery(router.query.q);
+      }
+    }
+  }, [router])
+
   return (
     <>
       <div className={`search-bar-container ${props.rootClassName} `}>
@@ -15,7 +28,9 @@ const SearchBar = (props) => {
           </select>
           <input
             type="text"
-            name="search"
+            name="q"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
             placeholder={props.textinput_placeholder}
             className="input"
           />
