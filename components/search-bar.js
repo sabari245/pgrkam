@@ -3,17 +3,19 @@
 import React, { useEffect, useState } from 'react'
 
 import PropTypes from 'prop-types'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 
 const SearchBar = (props) => {
-
-  const router = useRouter()
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const currPath = usePathname();
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    if (router.pathname == "/search") {
-      if (router.query.q) {
-        setQuery(router.query.q);
+    if (searchParams.has('q')) {
+      const search = searchParams.get('q');
+      if (search) {
+        setQuery(search);
       }
     }
   }, [router])
@@ -21,7 +23,7 @@ const SearchBar = (props) => {
   return (
     <>
       <div className={`search-bar-container ${props.rootClassName} `}>
-        <form className="search-bar-form">
+        <form className="search-bar-form" action={"/search"}>
           <select name="job-type" className="search-bar-select">
             <option value="government" selected>
               government
