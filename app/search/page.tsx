@@ -1,5 +1,6 @@
 "use client";
 
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -10,11 +11,14 @@ import TopBar from '@/components/top-bar'
 import TopBanner from '@/components/top-banner'
 import SearchBar from '@/components/search-bar'
 import JobDetailsCard from '@/components/job-details-card'
+import { get } from 'http';
 
 const Search = (props) => {
+  const supabase = createClientComponentClient()
   const searchParams = useSearchParams()
   const router = useRouter();
-  const [jobDetails, setJobDetails] = useState<SearchResult[]>([]);
+  // TODO: update job details type
+  const [jobDetails, setJobDetails] = useState<any[]>([]);
   const searchEngine = new MiniSearch({
     fields: ["jobTitle", "postedBy", "location"],
     storeFields: ["jobTitle", "postedBy", "postedOn", "shortDescription", "applicants", "location"]
@@ -23,10 +27,16 @@ const Search = (props) => {
   searchEngine.addAll(jobData)
 
   useEffect(() => {
+    const getData = async () => {
+      const { data } = await supabase.from('jobs').select()
+      if (data) {
+        setJobDetails(data)
+      }
+    }
     if (searchParams.has('q')) {
       const search = searchParams.get('q');
       if (search) {
-        setJobDetails(searchEngine.search(search))
+        getData();
       }
     }
   }, [router])
