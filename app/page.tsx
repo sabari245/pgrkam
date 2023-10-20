@@ -19,7 +19,7 @@ const Home = (props) => {
         <TopBar rootClassName="top-bar-root-class-name2"></TopBar>
         <TopBanner rootClassName="top-banner-root-class-name2"></TopBanner>
         <div className="home-main-banner">
-          <SearchBar></SearchBar>
+          {/* <SearchBar></SearchBar> */}
           <div className="home-feature-section">
             <h1>Available Jobs</h1>
             <div className="home-job-card-container">

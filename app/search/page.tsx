@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
-import { useRouter } from 'next/navigation'
-import MiniSearch from "minisearch"
+import { useRouter, useSearchParams } from 'next/navigation'
+import MiniSearch, { SearchResult } from "minisearch"
 import { jobData } from '@/components/data/jobs'
 
 import TopBar from '@/components/top-bar'
@@ -12,9 +12,9 @@ import SearchBar from '@/components/search-bar'
 import JobDetailsCard from '@/components/job-details-card'
 
 const Search = (props) => {
-
+  const searchParams = useSearchParams()
   const router = useRouter();
-  const [jobDetails, setJobDetails] = useState([]);
+  const [jobDetails, setJobDetails] = useState<SearchResult[]>([]);
   const searchEngine = new MiniSearch({
     fields: ["jobTitle", "postedBy", "location"],
     storeFields: ["jobTitle", "postedBy", "postedOn", "shortDescription", "applicants", "location"]
@@ -23,13 +23,16 @@ const Search = (props) => {
   searchEngine.addAll(jobData)
 
   useEffect(() => {
-    console.log("useEffect", router.query.q)
-    if (router.query.q) {
-      const result = searchEngine.search(router.query.q);
-      console.log(result)
-      setJobDetails(result)
+    if (searchParams.has('q')) {
+      const search = searchParams.get('q');
+      if (search) {
+        setJobDetails(searchEngine.search(search))
+      }
     }
   }, [router])
+
+  
+
 
   return (
     <>
