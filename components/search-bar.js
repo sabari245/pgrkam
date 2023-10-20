@@ -1,7 +1,9 @@
+"use client"
+
 import React, { useEffect, useState } from 'react'
 
 import PropTypes from 'prop-types'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 const SearchBar = (props) => {
 

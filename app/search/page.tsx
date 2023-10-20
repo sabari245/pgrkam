@@ -1,13 +1,15 @@
+"use client";
+
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import MiniSearch from "minisearch"
-import { jobData } from '../components/data/jobs'
+import { jobData } from '@/components/data/jobs'
 
-import TopBar from '../components/top-bar'
-import TopBanner from '../components/top-banner'
-import SearchBar from '../components/search-bar'
-import JobDetailsCard from '../components/job-details-card'
+import TopBar from '@/components/top-bar'
+import TopBanner from '@/components/top-banner'
+import SearchBar from '@/components/search-bar'
+import JobDetailsCard from '@/components/job-details-card'
 
 const Search = (props) => {
 

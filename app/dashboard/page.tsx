@@ -1,10 +1,12 @@
+"use client"
+
 import React from 'react'
 import Head from 'next/head'
 
-import TopBar from '../components/top-bar'
-import TopBanner from '../components/top-banner'
-import DashboardNavbar from '../components/dashboard-navbar'
-import SearchBar from '../components/search-bar'
+import TopBar from '@/components/top-bar'
+import TopBanner from '@/components/top-banner'
+import DashboardNavbar from '@/components/dashboard-navbar'
+import SearchBar from '@/components/search-bar'
 
 const Dashboard = (props) => {
   return (
