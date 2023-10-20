@@ -13,6 +13,7 @@
   "author": "TeleportHQ",
   "license": "MIT",
   "dependencies": {
+    "@supabase/supabase-js": "^2.38.2",
     "filter-data": "^0.5.1",
     "minisearch": "^6.1.0",
     "next": "^12.1.0",

@@ -3,7 +3,7 @@ import Head from 'next/head'
 
 import TopBar from '../components/top-bar'
 import TopBanner from '../components/top-banner'
-import { pb } from '../components/pocketbase'
+import { pb } from '../components/supabase'
 
 const Login = (props) => {
   const [formData, setFormData] = useState({
