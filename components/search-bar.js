@@ -19,7 +19,7 @@ const SearchBar = (props) => {
   return (
     <>
       <div className={`search-bar-container ${props.rootClassName} `}>
-        <form className="search-bar-form">
+        <form action='/search' className="search-bar-form">
           <select name="job-type" className="search-bar-select">
             <option value="government" selected>
               government
@@ -34,7 +34,7 @@ const SearchBar = (props) => {
             placeholder={props.textinput_placeholder}
             className="input"
           />
-          <button type="button" className="search-bar-button button">
+          <button type="submit" className="search-bar-button button">
             <span>
               <span>Search</span>
               <br></br>

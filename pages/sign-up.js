@@ -1,10 +1,49 @@
-import React from 'react'
+// import React from 'react'
 import Head from 'next/head'
+import React, { useState } from 'react';
 
 import TopBar from '../components/top-bar'
 import TopBanner from '../components/top-banner'
+import { pb } from '../components/pocketbase';
 
 const SignUp = (props) => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    retypePassword: '',
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // You can handle the form data here
+    console.log('Form Data:', formData);
+    // Add your logic to process the data, e.g., sending it to an API
+
+    pb.collection("users").create({
+      // username: "test_username",
+      email: formData.email,
+      emailVisibility: true,
+      password: formData.password,
+      passwordConfirm: formData.retypePassword,
+      // name: "test"
+    })
+
+    // Optionally, you can reset the form fields
+    setFormData({
+      email: '',
+      password: '',
+      retypePassword: '',
+    });
+  };
+
   return (
     <>
       <div className="sign-up-container">
@@ -16,67 +55,69 @@ const SignUp = (props) => {
         <TopBanner rootClassName="top-banner-root-class-name1"></TopBanner>
         <div className="sign-up-container01">
           <div className="sign-up-container02">
-            <form className="sign-up-form">
+            <form className="sign-up-form" onSubmit={handleSubmit}>
               <div className="sign-up-container03">
                 <h1 className="sign-up-text">Create Account</h1>
                 <span className="sign-up-text01">
                   <span>Please create your account to continue</span>
-                  <br></br>
+                  <br />
                 </span>
               </div>
               <div className="sign-up-container04">
                 <div className="sign-up-container05">
                   <label className="sign-up-text04 Label1">
                     <span>Email</span>
-                    <br></br>
+                    <br />
                   </label>
                   <input
                     type="email"
                     name="email"
                     placeholder="Enter Your Email ID"
                     className="input"
+                    value={formData.email}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="sign-up-container06">
                   <label className="sign-up-text07 Label1">
                     <span>Password</span>
-                    <br></br>
+                    <br />
                   </label>
                   <input
                     type="password"
                     name="password"
                     placeholder="Enter Your Password"
                     className="input"
+                    value={formData.password}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="sign-up-container07">
                   <label className="sign-up-text10 Label1">
                     <span>Retype Password</span>
-                    <br></br>
+                    <br />
                   </label>
                   <input
                     type="password"
-                    name="retype-password"
+                    name="retypePassword"
                     placeholder="Retype your password"
                     className="input"
+                    value={formData.retypePassword}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
-              <button type="button" className="sign-up-button button">
+              <button type="submit" className="sign-up-button button">
                 <span>
                   <span>Submit</span>
-                  <br></br>
+                  <br />
                 </span>
               </button>
               <div className="sign-up-container08">
                 <div className="sign-up-container09">
-                  <span className="sign-up-text16">
-                    Already Have a Account ? 
-                  </span>
+                  <span className="sign-up-text16">Already Have an Account ? </span>
                   <a
-                    href="https://example.com"
-                    target="_blank"
-                    rel="noreferrer noopener"
+                    href="/login"
                     className="sign-up-link"
                   >
                     Login

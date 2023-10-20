@@ -1,10 +1,42 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Head from 'next/head'
 
 import TopBar from '../components/top-bar'
 import TopBanner from '../components/top-banner'
+import { pb } from '../components/pocketbase'
 
 const Login = (props) => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // You can handle the login form data here
+    console.log('Login Form Data:', formData);
+    // Add your logic to authenticate the user, e.g., check credentials
+    const authData = await pb.collection("users").authWithPassword(
+      formData.email,
+      formData.password
+    )
+    console.log(authData)
+
+    // Optionally, you can clear the form fields
+    setFormData({
+      email: '',
+      password: '',
+    });
+  };
+
   return (
     <>
       <div className="login-container">
@@ -16,49 +48,53 @@ const Login = (props) => {
         <TopBanner rootClassName="top-banner-root-class-name"></TopBanner>
         <div className="login-container01">
           <div className="login-container02">
-            <form className="login-form">
+            <form className="login-form" onSubmit={handleSubmit}>
               <div className="login-container03">
                 <h1 className="login-text">Login</h1>
                 <span className="login-text01">
                   <span>Please login to continue</span>
-                  <br></br>
+                  <br />
                 </span>
               </div>
               <div className="login-container04">
                 <div className="login-container05">
                   <label className="login-text04 Label1">
                     <span>Email</span>
-                    <br></br>
+                    <br />
                   </label>
                   <input
                     type="email"
                     name="email"
                     placeholder="Enter Your Email ID"
                     className="input"
+                    value={formData.email}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="login-container06">
                   <label className="login-text07 Label1">
                     <span>Password</span>
-                    <br></br>
+                    <br />
                   </label>
                   <input
                     type="password"
                     name="password"
                     placeholder="Enter Your Password"
                     className="input"
+                    value={formData.password}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
-              <button type="button" className="login-button button">
+              <button type="submit" className="login-button button">
                 <span>
                   <span>Submit</span>
-                  <br></br>
+                  <br />
                 </span>
               </button>
               <div className="login-container07">
                 <div className="login-container08">
-                  <span className="login-text13">Forgot Password ? </span>
+                  <span className="login-text13">Forgot Password ? </span>
                   <a
                     href="https://example.com"
                     target="_blank"
@@ -69,15 +105,8 @@ const Login = (props) => {
                   </a>
                 </div>
                 <div className="login-container09">
-                  <span className="login-text14">
-                    Don&apos;t have an Account ? 
-                  </span>
-                  <a
-                    href="https://example.com"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="login-link1"
-                  >
+                  <span className="login-text14">Don't have an Account? </span>
+                  <a href="/sign-up" className="login-link1">
                     Create
                   </a>
                 </div>
