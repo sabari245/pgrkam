@@ -33,16 +33,22 @@ const SignUp = (props) => {
     }
 
     try {
-      const { data, error } = await supabase
-        .from('users')
-        .upsert([
-          {
-            email: email,
-            emailVisibility: true,
-            password: password,
-            passwordConfirm: retypePassword,
-          },
-        ]);
+
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+      })
+
+      // const { data, error } = await supabase
+      //   .from('users')
+      //   .upsert([
+      //     {
+      //       email: email,
+      //       emailVisibility: true,
+      //       password: password,
+      //       passwordConfirm: retypePassword,
+      //     },
+      //   ]);
 
       if (error) {
         console.error('Signup error:', error.message);

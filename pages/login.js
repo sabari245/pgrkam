@@ -25,7 +25,7 @@ const Login = (props) => {
     const { email, password } = formData;
 
     try {
-      const { user, error } = await supabase.auth.signIn({
+      const { user, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
