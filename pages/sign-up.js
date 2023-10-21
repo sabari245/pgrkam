@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 import TopBar from '../components/top-bar'
 import TopBanner from '../components/top-banner'
-import { pb } from '../components/supabase';
+import { supabase } from '../components/supabase';
 
 const SignUp = (props) => {
   const [formData, setFormData] = useState({
@@ -21,20 +21,40 @@ const SignUp = (props) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // You can handle the form data here
-    console.log('Form Data:', formData);
-    // Add your logic to process the data, e.g., sending it to an API
 
-    pb.collection("users").create({
-      // username: "test_username",
-      email: formData.email,
-      emailVisibility: true,
-      password: formData.password,
-      passwordConfirm: formData.retypePassword,
-      // name: "test"
-    })
+    const { email, password, retypePassword } = formData;
+
+    if (password !== retypePassword) {
+      console.error('Passwords do not match');
+      // Handle password mismatch error here, e.g., show an error message
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .upsert([
+          {
+            email: email,
+            emailVisibility: true,
+            password: password,
+            passwordConfirm: retypePassword,
+          },
+        ]);
+
+      if (error) {
+        console.error('Signup error:', error.message);
+        // Handle signup error here, e.g., show an error message
+      } else {
+        console.log('User signed up:', data);
+        // Redirect to the authenticated page or perform other actions
+      }
+    } catch (error) {
+      console.error('Signup error:', error.message);
+      // Handle unexpected signup errors here
+    }
 
     // Optionally, you can reset the form fields
     setFormData({

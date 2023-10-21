@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import MiniSearch from "minisearch"
-import { jobData } from '../components/data/jobs'
+import { supabase } from '../components/supabase';
 
 import TopBar from '../components/top-bar'
 import TopBanner from '../components/top-banner'
@@ -13,21 +12,26 @@ const Search = (props) => {
 
   const router = useRouter();
   const [jobDetails, setJobDetails] = useState([]);
-  const searchEngine = new MiniSearch({
-    fields: ["jobTitle", "postedBy", "location"],
-    storeFields: ["jobTitle", "postedBy", "postedOn", "shortDescription", "applicants", "location"]
-  })
-
-  searchEngine.addAll(jobData)
 
   useEffect(() => {
-    console.log("useEffect", router.query.q)
-    if (router.query.q) {
-      const result = searchEngine.search(router.query.q);
-      console.log(result)
-      setJobDetails(result)
-    }
-  }, [router])
+    const fetchJobDetails = async () => {
+      if (router.query.q) {
+        const { data, error } = await supabase
+          .from('jobs')
+          .select()
+          .textSearch('search_content', router.query.q)
+
+        if (error) {
+          console.error('Error fetching job details:', error.message);
+        } else {
+          console.log("fetched data from supabase: ", data);
+          setJobDetails(data);
+        }
+      }
+    };
+
+    fetchJobDetails();
+  }, [router]);
 
   return (
     <>
@@ -53,20 +57,19 @@ const Search = (props) => {
             </a>
           </div>
           <div className="search-container3">
-            {
-              jobDetails.map((data, i) => (
-                <JobDetailsCard
-                  rootClassName="job-details-card-root-class-name"
-                  jobTitle={data.jobTitle}
-                  postedBy={data.postedBy}
-                  postedOn={data.postedOn}
-                  shortDescription={data.shortDescription}
-                  applicants={data.applicants}
-                  location={data.location}
-                  button="Apply"
-                ></JobDetailsCard>
-              ))
-            }
+            {jobDetails.map((data, i) => (
+              <JobDetailsCard
+                key={i}
+                rootClassName="job-details-card-root-class-name"
+                jobTitle={data.title}
+                postedBy={data.uploaded_by}
+                postedOn={data.end_date}
+                shortDescription={data.short_description}
+                applicants={data.applicants_count}
+                location={data.location}
+                button="Apply"
+              />
+            ))}
           </div>
         </div>
       </div>

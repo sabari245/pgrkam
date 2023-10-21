@@ -3,7 +3,7 @@ import Head from 'next/head'
 
 import TopBar from '../components/top-bar'
 import TopBanner from '../components/top-banner'
-import { pb } from '../components/supabase'
+import { supabase } from '../components/supabase'
 
 const Login = (props) => {
   const [formData, setFormData] = useState({
@@ -21,14 +21,26 @@ const Login = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // You can handle the login form data here
-    console.log('Login Form Data:', formData);
-    // Add your logic to authenticate the user, e.g., check credentials
-    const authData = await pb.collection("users").authWithPassword(
-      formData.email,
-      formData.password
-    )
-    console.log(authData)
+
+    const { email, password } = formData;
+
+    try {
+      const { user, error } = await supabase.auth.signIn({
+        email,
+        password,
+      });
+
+      if (error) {
+        console.error('Login error:', error.message);
+        // Handle login error here, e.g., show an error message
+      } else {
+        console.log('User logged in:', user);
+        // Redirect to the authenticated page or perform other actions
+      }
+    } catch (error) {
+      console.error('Authentication error:', error.message);
+      // Handle unexpected authentication errors here
+    }
 
     // Optionally, you can clear the form fields
     setFormData({
