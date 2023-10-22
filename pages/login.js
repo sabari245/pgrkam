@@ -4,8 +4,14 @@ import Head from 'next/head'
 import TopBar from '../components/top-bar'
 import TopBanner from '../components/top-banner'
 import { supabase } from '../components/supabase'
+import { useRouter } from 'next/router'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = (props) => {
+
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -32,14 +38,46 @@ const Login = (props) => {
 
       if (error) {
         console.error('Login error:', error.message);
-        // Handle login error here, e.g., show an error message
+        toast.error('Sorry invalid credentials!', {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       } else {
         console.log('User logged in:', user);
-        // Redirect to the authenticated page or perform other actions
+
+        toast.success('Successfully logged in!', {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        setTimeout(() => {
+          router.replace("/")
+        }, 4000)
       }
     } catch (error) {
       console.error('Authentication error:', error.message);
-      // Handle unexpected authentication errors here
+      toast.error('Something went wrong!', {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
 
     // Optionally, you can clear the form fields
@@ -127,6 +165,18 @@ const Login = (props) => {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <style jsx>
         {`
           .login-container {

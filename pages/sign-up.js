@@ -5,8 +5,15 @@ import React, { useState } from 'react';
 import TopBar from '../components/top-bar'
 import TopBanner from '../components/top-banner'
 import { supabase } from '../components/supabase';
+import { useRouter } from 'next/router';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignUp = (props) => {
+
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -52,13 +59,45 @@ const SignUp = (props) => {
 
       if (error) {
         console.error('Signup error:', error.message);
-        // Handle signup error here, e.g., show an error message
+        toast.error("can't create user!", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       } else {
         console.log('User signed up:', data);
-        // Redirect to the authenticated page or perform other actions
+        toast.success('Successfully created user!', {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        setTimeout(() => {
+          router.replace("/login")
+        }, 4000)
       }
     } catch (error) {
       console.error('Signup error:', error.message);
+      toast.error('Something went wrong!', {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       // Handle unexpected signup errors here
     }
 
@@ -68,6 +107,7 @@ const SignUp = (props) => {
       password: '',
       retypePassword: '',
     });
+
   };
 
   return (
@@ -154,6 +194,18 @@ const SignUp = (props) => {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <style jsx>
         {`
           .sign-up-container {

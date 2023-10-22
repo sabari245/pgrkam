@@ -1,12 +1,30 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Head from 'next/head'
 
 import TopBar from '../components/top-bar'
 import TopBanner from '../components/top-banner'
 import SearchBar from '../components/search-bar'
 import JobsCard from '../components/jobs-card'
+import { supabase } from '../components/supabase'
+import { useRouter } from 'next/router'
 
 const Home = (props) => {
+
+  const router = useRouter()
+
+  useEffect(() => {
+    async function main() {
+      const { data, error } = await supabase.auth.getUser();
+      if (error) {
+        console.error('get user error:', error.message);
+        router.replace("/login")
+      } else {
+        console.log('User data:', data);
+      }
+    }
+    main()
+  }, [])
+
   return (
     <>
       <div className="home-container">
