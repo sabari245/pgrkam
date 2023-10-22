@@ -1,21 +1,29 @@
 import React from 'react'
 
 import PropTypes from 'prop-types'
+import Link from 'next/link'
 
 const TopBanner = (props) => {
   return (
     <>
       <div className={`top-banner-container ${props.rootClassName} `}>
-        <img
-          alt={props.image_alt}
-          src={props.image_src}
-          className="top-banner-image"
-        />
         <div className="top-banner-container1">
-          <h1 className="top-banner-text">{props.heading}</h1>
-          <span className="top-banner-text1">{props.subtitle}</span>
-          <span className="top-banner-text2">{props.secondarytitle}</span>
+          <img
+            alt={props.image_alt}
+            src={props.image_src}
+            className="top-banner-image"
+          />
+          <div className="top-banner-container2">
+            <h1 className="top-banner-text">{props.heading}</h1>
+            <span className="top-banner-text1">{props.subtitle}</span>
+            <span className="top-banner-text2">{props.secondarytitle}</span>
+          </div>
         </div>
+        <Link href="/dashboard">
+          <button type="button" className="top-banner-button button">
+            {props.button}
+          </button>
+        </Link>
       </div>
       <style jsx>
         {`
@@ -28,19 +36,26 @@ const TopBanner = (props) => {
             padding-left: var(--dl-space-space-oneandhalfunits);
             padding-right: var(--dl-space-space-oneandhalfunits);
             flex-direction: row;
-            justify-content: flex-start;
+            justify-content: space-between;
             background-image: linear-gradient(
               180deg,
               rgb(255, 255, 255) 0%,
               rgba(237, 144, 23, 0.77) 100%
             );
           }
+          .top-banner-container1 {
+            flex: 0 0 auto;
+            width: auto;
+            height: auto;
+            display: flex;
+            align-items: flex-start;
+          }
           .top-banner-image {
             width: 75px;
             height: auto;
             object-fit: cover;
           }
-          .top-banner-container1 {
+          .top-banner-container2 {
             gap: var(--dl-space-space-halfunit);
             flex: 0 0 auto;
             width: auto;
@@ -62,6 +77,9 @@ const TopBanner = (props) => {
             font-style: normal;
             font-weight: 600;
           }
+          .top-banner-button {
+            border-radius: 999px;
+          }
         `}
       </style>
     </>
@@ -75,6 +93,7 @@ TopBanner.defaultProps = {
   image_src: '/logo-new2-200w.png',
   image_alt: 'image',
   heading: 'PUNJAB GHAR GHAR ROZGAR',
+  button: 'User Dashboard',
 }
 
 TopBanner.propTypes = {
@@ -84,6 +103,7 @@ TopBanner.propTypes = {
   image_src: PropTypes.string,
   image_alt: PropTypes.string,
   heading: PropTypes.string,
+  button: PropTypes.string,
 }
 
 export default TopBanner

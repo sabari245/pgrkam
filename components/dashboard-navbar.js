@@ -1,19 +1,22 @@
 import React from 'react'
 
 import PropTypes from 'prop-types'
+import Link from 'next/link'
 
 const DashboardNavbar = (props) => {
   return (
     <>
       <div className={`dashboard-navbar-container ${props.rootClassName} `}>
         <span className="dashboard-navbar-text">{props.heading}</span>
-        <a href={props.link_text1} target="_blank" rel="noreferrer noopener">
-          {props.link1}
-        </a>
-        <a href={props.link_text2} target="_blank" rel="noreferrer noopener">
+        <Link href={"/"}>
+          <a rel="noreferrer noopener">
+            {props.link1}
+          </a>
+        </Link>
+        <a rel="noreferrer noopener">
           {props.link2}
         </a>
-        <a href={props.link_text3} target="_blank" rel="noreferrer noopener">
+        <a rel="noreferrer noopener">
           {props.link3}
         </a>
       </div>

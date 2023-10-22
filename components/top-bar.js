@@ -67,7 +67,7 @@ TopBar.defaultProps = {
   rootClassName: '',
   rt1: 'English',
   text: 'Link',
-  lt1: 'User Manuals',
+  lt1: 'User Preferences',
   rt2: 'A+',
   rt4: 'FAQs',
   Hellow: 'https://example.com',
