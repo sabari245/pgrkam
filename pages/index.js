@@ -7,6 +7,7 @@ import SearchBar from '../components/search-bar'
 import JobsCard from '../components/jobs-card'
 import { supabase } from '../components/supabase'
 import { useRouter } from 'next/router'
+import { BubbleChat } from 'flowise-embed-react'
 
 const Home = (props) => {
 
@@ -24,10 +25,11 @@ const Home = (props) => {
     }
     main()
   }, [])
-
+  // 
   return (
     <>
       <div className="home-container">
+        <BubbleChat chatflowid="cd0699a4-e1a4-470e-aedb-c0cb7448ed69" apiHost="http://localhost:3000" />
         <Head>
           <title>pgrkam</title>
           <meta property="og:title" content="pgrkam" />
